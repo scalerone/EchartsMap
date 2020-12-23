@@ -11,7 +11,7 @@ const routUrl = 'http://127.0.0.1:8080'
 module.exports = {
   publicPath: './',
   dev: {
-    host: getNetworkIp(),   //端口号
+    // host: '0.0.0.0',   //端口号
     port: 8999,
     autoOpen: true,  //自动打开
   },
@@ -22,19 +22,19 @@ module.exports = {
 }
 
 //获取本地ip地址
-function getNetworkIp() {
-  var netWork = os.networkInterfaces()
-  var ip = ''
-  for (var dev in netWork) {
-    netWork[dev].forEach(function (details) {
-      if (ip === '' && details.family === 'IPv4' && !details.internal) {
-        ip = details.address
-        return;
-      }
-    })
-  }
-  return ip || 'localhost'
-}
+// function getNetworkIp() {
+//   var netWork = os.networkInterfaces()
+//   var ip = ''
+//   for (let dev in netWork) {
+//     netWork[dev].forEach(function (details) {
+//       if (ip === '' && details.family === 'IPv4' && !details.internal) {
+//         ip = details.address
+//         return;
+//       }
+//     })
+//   }
+//   return ip || 'localhost'
+// }
 
 
 

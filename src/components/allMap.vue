@@ -1,6 +1,6 @@
 <template>
     <div class="echarts">
-        <div style="width:100;height:100%" ref="allMap"></div>
+        <div style="width:100%;height:100%" ref="allMap"></div>
         <div class="mapChoose">
             <span v-for="(item,index) in parentInfo" :key="item.code">
                 <span class="title" @click="chooseArea(item,index)">{{item.cityName=='全国'?'中国':item.cityName}}</span>
@@ -42,7 +42,9 @@
                             console.error(error);
                             return;
                         }
+                        console.log('AMapUI',areaNode)
                         let Json = areaNode.getSubFeatures();
+                      console.log('Json',Json)
                         if (Json.length > 0) {
                             that.geoJson.features = Json;
                         } else if (Json.length === 0) {
@@ -51,6 +53,7 @@
                             );
                             if (that.geoJson.features.length === 0) return;
                         }
+                      console.log('that.geoJson',that.geoJson)
                         that.getMapData();
                     });
                 });
@@ -292,14 +295,14 @@
                                 top: 10,
                                 text: item + this.parentInfo[this.parentInfo.length - 1].cityName +
                                     '年' +
-                                    '销售额统计图(可点击下钻到县)',
+                                    '质控动态统计图(可点击下钻到县)',
                                 textStyle: {
                                     color: 'rgb(179, 239, 255)',
                                     fontSize: 16
                                 },
                             },
                             {
-                                text: "销售总额：" + sum[item].toFixed(2) + '万',
+                                text: "质控总数：" + sum[item].toFixed(2) + '万',
                                 left: 'center',
                                 top: '6.5%',
                                 textStyle: {
@@ -368,7 +371,7 @@
                             data: xData
                         },
                         series: [{
-                                name: item + '销售额度',
+                                name: item + '质控数量',
                                 type: 'map',
                                 geoIndex: 0,
                                 map: this.parentInfo.length === 1 ? 'china' : 'map',
