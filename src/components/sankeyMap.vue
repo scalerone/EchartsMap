@@ -3,13 +3,10 @@
         <div style="width:100%;height:100%" ref="myCharts" @contextmenu.prevent="openMenu($event)"></div>
         <!-- 右键菜单-->
         <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-            <!-- <li v-if="rightClickItem.fileType==99" @click="handleClickFolder(rightClickItem)">打开</li>
-            <li @click="handleDelete(rightClickItem)">删除</li>
-            <li @click="handleDownloadFile(rightClickItem)" v-if="rightClickItem.fileType!=99">下载</li>
-            <li @click="handlePreviewFile(rightClickItem)" v-if="rightClickItem.fileType!=99">预览</li>
+            <!-- <li @click="handleClickFolder(rightClickItem)">打开</li>
             <li @click="handleUpdate(rightClickItem)">编辑</li> -->
-            <li>保留</li>
-            <li>去除</li>
+            <li>复制</li>
+            <li @click="clearSelectedNodeStyle(true)">去除</li>
         </ul>
 
     </div>
@@ -116,8 +113,9 @@
       //-------图表
       initEcharts() {
         this.myChart = echarts.init(this.$refs.myCharts)
-
         this._setOption()
+        this.findHeadNode()
+        this.getLastLevelNodes()
       },
       _setOption() {
         let option = {
@@ -137,6 +135,10 @@
             type: 'sankey',
             layout: 'none',
             // focusNodeAdjacency: 'allEdges',
+            lineStyle: {
+              color: 'source',
+              curveness: 0.5
+            },
             data: this.nodes,
             links: this.links,
           }
@@ -146,12 +148,11 @@
         this.myChart.off('click');
         this.myChart.on('click', this.echartsMapClick);
         this.myChart.on('contextmenu', this.rightClick);
-        this.findHeadNode()
-        this.getLastLevelNodes()
+
       },
       //点击选中
       echartsMapClick(params) {
-        console.log('params:', params)
+        console.log('node params:', params)
         if (!params.data) {
           return
         }
@@ -167,7 +168,7 @@
           currentItemObj =this.links.find((o) => o.target == currentItem.name)
           if (currentItemObj) {
             // this.findLeftLink(currentItemObj)
-            // 如果不是是末级节点
+            // 如果不是末级节点
             if (!this.lastLevelNodesArr.find((v) => v.name === currentItem.name)) {
               this.findRightLink(currentItemObj)
             }
@@ -191,8 +192,7 @@
 
         // console.log('左边的节点leftNodesArr', this.leftNodesArr)
         // console.log('右边的节点rightNodesArr', this.rightNodesArr)
-
-//   let matchedNodes = Array.from(new Set(leftNodesArr.concat(rightNodesArr)))
+        //   let matchedNodes = Array.from(new Set(leftNodesArr.concat(rightNodesArr)))
         // console.log('matchedNodes', matchedNodes)
         if (!currentItem.hasOwnProperty('value')) {
           //第一个是不是根节点
@@ -278,13 +278,16 @@
         this.links.filter((item) => item.source == obj.target).map((i) => this.findRightLink(i))
       },
       //清除节点选中样式
-      clearSelectedNodeStyle(){
+      clearSelectedNodeStyle(clickClear=false){
         this.links.forEach((item) => {
           if (item.hasOwnProperty('value')) {
             delete item.lineStyle
           }
         })
-      }
+        if(clickClear){
+          this._setOption()
+        }
+      },
 
 
       //---------------------------计算部分end-------------------------------
