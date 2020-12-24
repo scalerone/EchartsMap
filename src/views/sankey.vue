@@ -1,6 +1,6 @@
 <template>
     <div id="sankey">
-    <sankey-map v-cloak></sankey-map>
+        <sankey-map v-cloak></sankey-map>
     </div>
 </template>
 

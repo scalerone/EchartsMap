@@ -55,6 +55,7 @@
     "@babel/runtime-corejs2": "^7.10.2",
     "core-js": "^2.6.11",
     "echarts": "^4.8.0",
+    "element-ui": "^2.14.1",
     "vue": "^2.6.11",
     "vue-router": "^3.3.2"
   }

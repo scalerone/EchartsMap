@@ -12,6 +12,7 @@ module.exports = {
   publicPath: './',
   dev: {
     // host: '0.0.0.0',   //端口号
+    host: 'localhost',   //端口号
     port: 8999,
     autoOpen: true,  //自动打开
   },
